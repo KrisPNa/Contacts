@@ -1,0 +1,586 @@
+/* Минималистичный стиль без значков */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.4;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.container h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+/* Хедер */
+header {
+    background: #007bff;
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-info {
+    color: white;
+    font-size: 14px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+/* Сообщения */
+.alert-message {
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.alert-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Поиск */
+.search-form {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+
+.search-form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.search-category-select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    min-width: 150px;
+}
+
+/* Контакты */
+.contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.contact-card {
+    background: white;
+    padding: 12px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-card:hover {
+    background: #f9f9f9;
+}
+
+
+.contact-info h3 {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Нет контактов */
+.no-contacts {
+    text-align: center;
+    padding: 30px;
+    background: white;
+    border: 1px solid #ddd;
+}
+
+.no-contacts a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    gap: 5px;
+    margin: 20px 0;
+    justify-content: center;
+}
+
+.page-link {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background: white;
+    text-decoration: none;
+    color: #333;
+}
+
+.page-link.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Формы */
+.contact-form {
+    background: white;
+    padding: 12px;
+    border: 1px solid #ddd;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+/* Категории */
+.add-category-section {
+    margin-bottom: 8px;
+}
+
+.add-category-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.add-category-input input {
+    flex: 1;
+    padding: 5px;
+    font-size: 13px;
+}
+
+.btn-add-category {
+    padding: 5px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.categories-list {
+    margin-top: 6px;
+    max-height: 100px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 6px;
+    border-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.category-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 12px;
+    margin-bottom: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.form-meta {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    font-size: 11px;
+    color: #666;
+}
+
+.form-meta p {
+    margin: 3px 0;
+}
+
+/* Кнопки */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+}
+
+button, .btn-save, .btn-cancel, .btn-delete {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-save {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.btn-add {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Страница контакта */
+.contact-view-page {
+    background: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-view-header {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    align-items: center;
+}
+
+
+.contact-view-info h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.contact-detail {
+    margin-bottom: 15px;
+}
+
+.contact-detail-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.contact-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Стили для страницы просмотра контакта */
+.contact-view-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact-view-name {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-view-name h1,
+.contact-view-name h2 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: normal;
+}
+
+.contact-view-phone-section,
+.contact-view-section {
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.phone-info,
+.section-info {
+    width: 100%;
+}
+
+.phone-label,
+.section-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.phone-number,
+.section-value {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    display: block;
+    line-height: 1.5;
+}
+
+.categories-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.category-tag {
+    background: #007bff;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.contact-view-topbar {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Авторизация */
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.auth-card {
+    background: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+}
+
+.auth-card h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-form .form-group {
+    margin-bottom: 15px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-switch a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Футер */
+footer {
+    background: #333;
+    color: #999;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+/* Ошибки */
+.validation-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+/* Текстовые кнопки вместо значков */
+.text-btn {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 4px 8px;
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+}
+
+.text-btn:hover {
+    background: #f5f5f5;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header .container {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-actions,
+    .contact-actions {
+        flex-direction: column;
+    }
+    
+    .contact-view-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .search-form-row {
+        flex-direction: column;
+    }
+    /* Добавь в style.css */
+.topbar-actions-row {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.topbar-actions-row .text-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background: white;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.topbar-actions-row .text-btn:hover {
+    background: #f5f5f5;
+}
+
+.topbar-actions-row .text-btn:first-child {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.topbar-actions-row .text-btn:nth-child(2) {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.topbar-actions-row .text-btn.btn-delete {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.topbar-actions-row .text-btn:first-child:hover {
+    background: #6c757d;
+    color: white;
+}
+
+.topbar-actions-row .text-btn:nth-child(2):hover {
+    background: #007bff;
+    color: white;
+}
+
+.topbar-actions-row .text-btn.btn-delete:hover {
+    background: #dc3545;
+    color: white;
+}
+}
