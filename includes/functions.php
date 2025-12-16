@@ -256,6 +256,26 @@ function deleteContact($id, $user_id = null) {
     $stmt = $pdo->prepare($sql);
     return $stmt->execute($params);
 }
-
+function addCategoryByName($name) {
+    global $pdo;
+    
+    try {
+        $check_sql = "SELECT id FROM categories WHERE name = ?";
+        $check_stmt = $pdo->prepare($check_sql);
+        $check_stmt->execute([trim($name)]);
+        
+        if ($check_stmt->fetch()) {
+            throw new Exception('Категория с таким именем уже существует');
+        }
+        
+        $sql = "INSERT INTO categories (name) VALUES (?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([trim($name)]);
+        
+        return $pdo->lastInsertId();
+    } catch (Exception $e) {
+        throw $e;
+    }
+}
 
 ?>

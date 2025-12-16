@@ -25,5 +25,21 @@ function getCurrentAdminId() {
 function isAdmin() {
     return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
-?>
 
+// Функция для получения статистики системы
+function getSystemStats() {
+    global $pdo;
+    
+    try {
+        $sql = "SELECT 
+                (SELECT COUNT(*) FROM users WHERE role = 'user') as total_users,
+                (SELECT COUNT(*) FROM contacts) as total_contacts";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        return ['total_users' => 0, 'total_contacts' => 0];
+    }
+}
+?>

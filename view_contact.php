@@ -1,3 +1,4 @@
+
 <?php
 include_once 'config/database.php';
 include_once 'includes/functions.php';
@@ -12,10 +13,8 @@ if (!isset($_GET['id'])) {
 }
 
 $contact_id = (int)$_GET['id'];
-// Получаем URL для возврата (если администратор пришел из админ-панели)
 $return_url = $_GET['return'] ?? null;
 
-// Администратор может просматривать любые контакты
 $contact = getContactById($contact_id, $is_admin ? null : $user_id);
 
 if (!$contact) {
@@ -34,74 +33,92 @@ foreach ($categories as $cat) {
 ?>
 <?php include 'includes/header.php'; ?>
 
-<div class="contact-view-page">
-    <div class="container">
-        <!-- Top Bar -->
-        <div class="contact-view-topbar">
-        <div class="topbar-actions-row">
-    <?php if ($is_admin && $return_url): ?>
-        <a href="<?= htmlspecialchars($return_url) ?>" class="text-btn">Назад</a>
-    <?php else: ?>
-        <a href="<?= $is_admin ? 'admin_users.php' : 'index.php' ?>" class="text-btn">Назад</a>
-    <?php endif; ?>
-    <a href="edit_contact.php?id=<?= $contact['id'] ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" class="text-btn">Редактировать</a>
-    <a href="delete_contact.php?id=<?= $contact['id'] ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" class="text-btn btn-delete" 
-       onclick="return confirm('Вы уверены?')">Удалить</a>
-</div>
+<div class="container contact-view">
+    <!-- Панель действий -->
+    <div class="form-header mb-4">
+        <div></div> <!-- Пустой div для выравнивания -->
+        <div class="d-flex gap-2">
+            <?php if ($is_admin && $return_url): ?>
+                <a href="<?= htmlspecialchars($return_url) ?>" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i>Назад
+                </a>
+            <?php else: ?>
+                <a href="<?= $is_admin ? 'admin_users.php' : 'index.php' ?>" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i>Назад
+                </a>
+            <?php endif; ?>
+            <a href="edit_contact.php?id=<?= $contact['id'] ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
+               class="btn btn-primary">
+                <i class="bi bi-pencil"></i>Редактировать
+            </a>
+            <a href="delete_contact.php?id=<?= $contact['id'] ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
+               class="btn btn-secondary"
+               onclick="return confirm('Вы уверены, что хотите удалить этот контакт?')">
+                <i class="bi bi-trash"></i>Удалить
+            </a>
         </div>
-        
-        <!-- Contact Content -->
-        <div class="contact-view-content">
-            <!-- Name -->
-            <div class="contact-view-name">
+    </div>
+    
+    <!-- Информация о контакте -->
+    <div class="card">
+        <div class="contact-header">
+            <div class="contact-avatar-large">
+                <i class="bi bi-person"></i>
+            </div>
+            <div class="contact-fullname">
                 <h1><?= htmlspecialchars($contact['first_name']) ?></h1>
                 <h2><?= htmlspecialchars($contact['last_name']) ?></h2>
             </div>
-            
-            <!-- Phone Section -->
+        </div>
+        
+        <div class="contact-details">
             <?php if ($contact['phone']): ?>
-                <div class="contact-view-phone-section">
-                    <div class="phone-info">
-                    <div class="phone-label">Мобильный</div>
-                        <div class="phone-number"><?= htmlspecialchars($contact['phone']) ?></div>
-                        
+                <div class="contact-section">
+                    <div class="section-label">
+                        <i class="bi bi-telephone"></i> Телефон
                     </div>
-                    
+                    <div class="section-value">
+                        <?= htmlspecialchars($contact['phone']) ?>
+                    </div>
                 </div>
             <?php endif; ?>
             
-            <!-- Email Section -->
             <?php if ($contact['email']): ?>
-                <div class="contact-view-section">
-                    <div class="section-info">
-                    <div class="section-label">Email</div>
-                        <div class="section-value"><?= htmlspecialchars($contact['email']) ?></div>
-                        
+                <div class="contact-section">
+                    <div class="section-label">
+                        <i class="bi bi-envelope"></i> Email
                     </div>
-                    
+                    <div class="section-value">
+                        <?= htmlspecialchars($contact['email']) ?>
+                    </div>
                 </div>
             <?php endif; ?>
             
-            <!-- Address Section -->
             <?php if ($contact['address']): ?>
-                <div class="contact-view-section">
-                    <div class="section-info">
-                    <div class="section-label">Адрес</div>
-                        <div class="section-value"><?= nl2br(htmlspecialchars($contact['address'])) ?></div>
-                        
+                <div class="contact-section">
+                    <div class="section-label">
+                        <i class="bi bi-house-door"></i> Адрес
+                    </div>
+                    <div class="section-value">
+                        <?= nl2br(htmlspecialchars($contact['address'])) ?>
                     </div>
                 </div>
             <?php endif; ?>
             
-            <!-- Categories Section -->
             <?php if (!empty($contact_categories)): ?>
-                <div class="contact-view-section">
-                    <div class="section-info">
-                        <div class="section-label">Категория</div>
-                        <div class="section-value"><?= htmlspecialchars(implode(', ', $contact_categories)) ?></div>
+                <div class="contact-section">
+                    <div class="section-label">
+                        <i class="bi bi-tags"></i> Категории
+                    </div>
+                    <div class="section-value">
+                        <div class="contact-categories">
+                            <?php foreach ($contact_categories as $cat_name): ?>
+                                <span class="category-badge"><?= htmlspecialchars($cat_name) ?></span>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
             <?php endif; ?>
         </div>
     </div>
-</div>  
+</div>

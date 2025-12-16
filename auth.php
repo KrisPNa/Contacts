@@ -1,7 +1,7 @@
+
 <?php
 include_once 'config/database.php';
 
-// Запускаем сессию
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -10,7 +10,6 @@ $action = $_GET['action'] ?? 'login';
 $error = '';
 $success = '';
 
-// Обработка регистрации
 if ($_POST && $action === 'register') {
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -29,7 +28,6 @@ if ($_POST && $action === 'register') {
         $error = 'Пароли не совпадают';
     } else {
         try {
-            // Проверяем, существует ли пользователь
             $check_sql = "SELECT id FROM users WHERE username = ? OR email = ?";
             $check_stmt = $pdo->prepare($check_sql);
             $check_stmt->execute([$username, $email]);
@@ -37,13 +35,12 @@ if ($_POST && $action === 'register') {
             if ($check_stmt->fetch()) {
                 $error = 'Пользователь с таким именем или email уже существует';
             } else {
-                // Создаем нового пользователя
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $insert_sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
                 $insert_stmt = $pdo->prepare($insert_sql);
                 $insert_stmt->execute([$username, $email, $hashed_password]);
                 
-                $success = 'Регистрация успешна! Теперь вы можете войти.';
+                // Убираем сообщение об успехе, просто показываем форму входа
                 $action = 'login';
             }
         } catch (Exception $e) {
@@ -52,7 +49,6 @@ if ($_POST && $action === 'register') {
     }
 }
 
-// Обработка входа
 if ($_POST && $action === 'login') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -72,9 +68,8 @@ if ($_POST && $action === 'login') {
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role'] = $user['role'] ?? 'user';
                 
-                // Администраторы перенаправляются в админ-панель
                 if ($user['role'] === 'admin') {
-                    header("Location: admin_dashboard.php");
+                    header("Location: admin_users.php");
                 } else {
                     header("Location: index.php");
                 }
@@ -94,81 +89,113 @@ if ($_POST && $action === 'login') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $action === 'register' ? 'Регистрация' : 'Вход' ?> - Контакты</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h1><?= $action === 'register' ? 'Регистрация' : 'Вход' ?></h1>
-            
-            <?php if ($error): ?>
-                <div class="alert-message error"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-            
-            <?php if ($success): ?>
-                <div class="alert-message success"><?= htmlspecialchars($success) ?></div>
-            <?php endif; ?>
-            
-            <?php if ($action === 'register'): ?>
-                <form method="POST" class="auth-form">
-                    <div class="form-group">
-                        <label for="username">Имя пользователя *</label>
-                        <input type="text" id="username" name="username" required 
-                               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
-                               minlength="3" autocomplete="username">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required 
-                               value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" 
-                               autocomplete="email">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">Пароль *</label>
-                        <input type="password" id="password" name="password" required 
-                               minlength="6" autocomplete="new-password">
-                        <small>Минимум 6 символов</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password_confirm">Подтвердите пароль *</label>
-                        <input type="password" id="password_confirm" name="password_confirm" required 
-                               minlength="6" autocomplete="new-password">
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" class="btn-save">Зарегистрироваться</button>
-                        <a href="?action=login" class="btn-cancel">Уже есть аккаунт? Войти</a>
-                    </div>
-                </form>
-            <?php else: ?>
-                <form method="POST" class="auth-form">
-                    <div class="form-group">
-                        <label for="username">Имя пользователя или Email *</label>
-                        <input type="text" id="username" name="username" required 
-                               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
-                               autocomplete="username">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">Пароль *</label>
-                        <input type="password" id="password" name="password" required 
-                               autocomplete="current-password">
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" class="btn-save">Войти</button>
-                        <a href="?action=register" class="btn-cancel">Нет аккаунта? Зарегистрироваться</a>
-                    </div>
-                </form>
-            <?php endif; ?>
-            <div style="margin-top: 20px; text-align: center;">
-                <a href="admin_login.php" style="color: #007bff; text-decoration: none; font-size: 14px;">Вход для администратора</a>
+<body class="auth-page">
+    <div class="auth-card">
+        <div class="auth-icon">
+            <i class="bi bi-person-circle"></i>
+        </div>
+        <h1 class="auth-title"><?= $action === 'register' ? 'Регистрация' : 'Вход' ?></h1>
+        <p class="auth-subtitle">
+            <?= $action === 'register' ? 'Создайте новый аккаунт' : 'Войдите в свой аккаунт' ?>
+        </p>
+        
+        <?php if ($error): ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i>
+                <?= htmlspecialchars($error) ?>
             </div>
+        <?php endif; ?>
+        
+        <?php if ($action === 'register'): ?>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Имя пользователя *</label>
+                    <div class="d-flex">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" required 
+                               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
+                               minlength="3" autocomplete="username" placeholder="Введите имя пользователя">
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email *</label>
+                    <div class="d-flex">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" required 
+                               value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" 
+                               autocomplete="email" placeholder="email@example.com">
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Пароль *</label>
+                    <div class="d-flex">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" required 
+                               minlength="6" autocomplete="new-password" placeholder="Минимум 6 символов">
+                    </div>
+                    <div class="form-text">Минимум 6 символов</div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password_confirm" class="form-label">Подтвердите пароль *</label>
+                    <div class="d-flex">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" required 
+                               minlength="6" autocomplete="new-password" placeholder="Повторите пароль">
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mb-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i>Зарегистрироваться
+                    </button>
+                    <a href="?action=login" class="btn btn-outline-primary">
+                        <i class="bi bi-box-arrow-in-right"></i>Уже есть аккаунт? Войти
+                    </a>
+                </div>
+            </form>
+        <?php else: ?>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Имя пользователя или Email *</label>
+                    <div class="d-flex">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" required 
+                               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
+                               autocomplete="username" placeholder="Введите имя пользователя или email">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="form-label">Пароль *</label>
+                    <div class="d-flex">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" required 
+                               autocomplete="current-password" placeholder="Введите пароль">
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mb-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-in-right"></i>Войти
+                    </button>
+                    <a href="?action=register" class="btn btn-outline-primary">
+                        <i class="bi bi-person-plus"></i>Нет аккаунта? Зарегистрироваться
+                    </a>
+                </div>
+            </form>
+        <?php endif; ?>
+        
+        <div class="auth-footer">
+            <a href="admin_login.php" class="text-accent">
+                <i class="bi bi-shield-check"></i>Вход для администратора
+            </a>
         </div>
     </div>
 </body>
 </html>
-
