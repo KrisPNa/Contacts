@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 include_once 'includes/admin_check.php';
@@ -74,6 +73,9 @@ $total_pages = ceil($total_users / $limit);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление пользователями - Админ-панель</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -114,34 +116,35 @@ $total_pages = ceil($total_users / $limit);
             </div>
             
             <!-- Заголовок -->
-            <div class="form-header mb-4">
-                <h1 class="h3">Управление пользователями</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">Управление пользователями</h1>
                 <div></div>
             </div>
             
             <?php if ($error): ?>
-                <div class="alert alert-danger">
-                    <i class="bi bi-exclamation-triangle"></i>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
                     <?= htmlspecialchars($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             
             <!-- Поиск -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <form method="GET" class="d-flex flex-wrap gap-3 align-items-end">
-                        <div style="flex: 1; min-width: 300px;">
+                    <form method="GET" class="row g-3 align-items-end">
+                        <div class="col-md-8">
                             <label for="search" class="form-label">Поиск пользователей</label>
-                            <div class="d-flex">
+                            <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
                                 <input type="text" class="form-control" id="search" name="search" 
                                        placeholder="По имени пользователя или email" 
                                        value="<?= htmlspecialchars($search) ?>">
                             </div>
                         </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-funnel"></i>Найти
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-funnel me-2"></i>Найти
                             </button>
                         </div>
                     </form>
@@ -149,9 +152,9 @@ $total_pages = ceil($total_users / $limit);
             </div>
             
             <!-- Таблица пользователей -->
-            <div class="table-container mb-5">
-                <table class="table">
-                    <thead>
+            <div class="table-responsive card mb-5 p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
                         <tr>
                             <th>ID</th>
                             <th>Имя пользователя</th>
@@ -164,28 +167,30 @@ $total_pages = ceil($total_users / $limit);
                         <?php if (count($users) > 0): ?>
                             <?php foreach ($users as $user): ?>
                                 <tr>
-                                    <td><?= $user['id'] ?></td>
+                                    <td class="fw-semibold"><?= $user['id'] ?></td>
                                     <td>
                                         <strong><?= htmlspecialchars($user['username']) ?></strong>
                                     </td>
                                     <td><?= htmlspecialchars($user['email']) ?></td>
                                     <td>
-                                        <span class="badge badge-primary"><?= $user['contacts_count'] ?></span>
+                                        <span class="badge bg-primary"><?= $user['contacts_count'] ?></span>
                                     </td>
                                     <td>
-                                        <div class="d-flex gap-2">
+                                        <div class="btn-group" role="group">
                                             <a href="admin_user_contacts.php?user_id=<?= $user['id'] ?>" 
-                                               class="btn btn-primary btn-sm">
+                                               class="btn btn-outline-primary btn-sm"
+                                               title="Просмотреть контакты">
                                                <i class="bi bi-person-lines-fill"></i>
                                             </a>
                                             <?php if ($user['id'] != $_SESSION['user_id']): ?>
                                                 <a href="admin_users.php?delete=<?= $user['id'] ?>" 
-                                                   class="btn btn-secondary btn-sm"
-                                                   onclick="return confirm('Вы уверены, что хотите удалить пользователя <?= htmlspecialchars($user['username']) ?>? Все его контакты также будут удалены.')">
+                                                   class="btn btn-outline-danger btn-sm"
+                                                   onclick="return confirm('Вы уверены, что хотите удалить пользователя <?= htmlspecialchars(addslashes($user['username'])) ?>? Все его контакты также будут удалены.')"
+                                                   title="Удалить пользователя">
                                                    <i class="bi bi-trash"></i>
                                                 </a>
                                             <?php else: ?>
-                                                <span class="btn btn-secondary btn-sm disabled">
+                                                <span class="btn btn-outline-secondary btn-sm disabled">
                                                     <i class="bi bi-person-check"></i>
                                                 </span>
                                             <?php endif; ?>
@@ -195,10 +200,10 @@ $total_pages = ceil($total_users / $limit);
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5" class="text-center py-4">
+                                <td colspan="5" class="text-center py-5">
                                     <div class="text-muted">
-                                        <i class="bi bi-people" style="font-size: 2rem;"></i>
-                                        <p class="mt-2">Пользователи не найдены</p>
+                                        <i class="bi bi-people display-4"></i>
+                                        <p class="mt-3 fs-5">Пользователи не найдены</p>
                                     </div>
                                 </td>
                             </tr>
@@ -209,45 +214,74 @@ $total_pages = ceil($total_users / $limit);
             
             <!-- Пагинация -->
             <?php if ($total_pages > 1): ?>
-                <div class="pagination">
-                    <?php if ($page > 1): ?>
-                        <a href="?page=1&search=<?= urlencode($search) ?>" class="page-link">
-                            <i class="bi bi-chevron-double-left"></i>
-                        </a>
-                        <a href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>" class="page-link">
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                    <?php endif; ?>
-                    
-                    <?php 
-                    $start = max(1, $page - 2);
-                    $end = min($total_pages, $page + 2);
-                    
-                    if ($start > 1): ?>
-                        <span class="page-link disabled">...</span>
-                    <?php endif; ?>
-                    
-                    <?php for ($i = $start; $i <= $end; $i++): ?>
-                        <a href="?page=<?= $i ?>&search=<?= urlencode($search) ?>" 
-                           class="page-link <?= $i == $page ? 'active' : '' ?>">
-                            <?= $i ?>
-                        </a>
-                    <?php endfor; ?>
-                    
-                    <?php if ($end < $total_pages): ?>
-                        <span class="page-link disabled">...</span>
-                    <?php endif; ?>
-                    
-                    <?php if ($page < $total_pages): ?>
-                        <a href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>" class="page-link">
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                        <a href="?page=<?= $total_pages ?>&search=<?= urlencode($search) ?>" class="page-link">
-                            <i class="bi bi-chevron-double-right"></i>
-                        </a>
-                    <?php endif; ?>
-                </div>
-                <div class="pagination-info">
+                <nav aria-label="Навигация по страницам">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($page > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1&search=<?= urlencode($search) ?>">
+                                    <i class="bi bi-chevron-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                            </li>
+                        <?php endif; ?>
+                        
+                        <?php 
+                        $start = max(1, $page - 2);
+                        $end = min($total_pages, $page + 2);
+                        
+                        if ($start > 1): ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        <?php endif; ?>
+                        
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
+                            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $i ?>&search=<?= urlencode($search) ?>">
+                                    <?= $i ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+                        
+                        <?php if ($end < $total_pages): ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        <?php endif; ?>
+                        
+                        <?php if ($page < $total_pages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $total_pages ?>&search=<?= urlencode($search) ?>">
+                                    <i class="bi bi-chevron-double-right"></i>
+                                </a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+                <div class="text-center text-muted mt-2">
                     Страница <?= $page ?> из <?= $total_pages ?> • 
                     <?= $total_users ?> пользователей
                 </div>
@@ -255,5 +289,7 @@ $total_pages = ceil($total_users / $limit);
         </div>
     </main>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

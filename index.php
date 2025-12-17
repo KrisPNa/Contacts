@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 include_once 'includes/functions.php';
@@ -21,11 +20,11 @@ $categories = getAllCategories();
 ?>
 <?php include 'includes/header.php'; ?>
 
-<div class="container">
-    <div class="form-header mb-4">
-        <h1 class="h3">Мои контакты</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Мои контакты</h1>
         <div class="text-muted">
-            <i class="bi bi-person-lines-fill"></i>
+            <i class="bi bi-person-lines-fill me-1"></i>
             Всего контактов: <strong><?= $total_contacts ?></strong>
         </div>
     </div>
@@ -33,19 +32,19 @@ $categories = getAllCategories();
     <!-- Форма поиска -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" class="d-flex flex-wrap gap-3 align-items-end">
-                <div style="flex: 1; min-width: 250px;">
+            <form method="GET" class="row g-3 align-items-end">
+                <div class="col-md-6">
                     <label for="search" class="form-label">Поиск контактов</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" id="search" name="search" 
                                placeholder="По имени, фамилии, email или телефону" 
                                value="<?= htmlspecialchars($search) ?>">
                     </div>
                 </div>
-                <div style="min-width: 200px;">
+                <div class="col-md-4">
                     <label for="category" class="form-label">Категория</label>
-                    <select class="form-control" id="category" name="category">
+                    <select class="form-select" id="category" name="category">
                         <option value="">Все категории</option>
                         <?php foreach ($categories as $cat): ?>
                             <option value="<?= $cat['id'] ?>" <?= $category_filter == $cat['id'] ? 'selected' : '' ?>>
@@ -54,9 +53,9 @@ $categories = getAllCategories();
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-funnel"></i>Найти
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel me-2"></i>Найти
                     </button>
                 </div>
             </form>
@@ -106,20 +105,20 @@ $categories = getAllCategories();
             <?php endforeach; ?>
         <?php else: ?>
             <div class="card text-center" style="grid-column: 1 / -1;">
-                <div class="card-body">
+                <div class="card-body py-5">
                     <div class="mb-4">
-                        <i class="bi bi-journal-x text-muted" style="font-size: 4rem;"></i>
+                        <i class="bi bi-journal-x text-muted display-1"></i>
                     </div>
                     <h3 class="h4 text-muted mb-3">Контакты не найдены</h3>
                     <?php if ($search || $category_filter): ?>
                         <p class="text-muted mb-4">Попробуйте изменить параметры поиска</p>
                         <a href="index.php" class="btn btn-outline-primary">
-                            <i class="bi bi-arrow-counterclockwise"></i>Показать все контакты
+                            <i class="bi bi-arrow-counterclockwise me-2"></i>Показать все контакты
                         </a>
                     <?php else: ?>
                         <p class="text-muted mb-4">У вас пока нет сохраненных контактов</p>
                         <a href="add_contact.php" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i>Добавить первый контакт
+                            <i class="bi bi-plus-circle me-2"></i>Добавить первый контакт
                         </a>
                     <?php endif; ?>
                 </div>
@@ -129,49 +128,76 @@ $categories = getAllCategories();
     
     <!-- Пагинация -->
     <?php if ($total_pages > 1): ?>
-        <div class="pagination">
-            <?php if ($page > 1): ?>
-                <a href="?page=1&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>" class="page-link">
-                    <i class="bi bi-chevron-double-left"></i>
-                </a>
-                <a href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>" class="page-link">
-                    <i class="bi bi-chevron-left"></i>
-                </a>
-            <?php endif; ?>
-            
-            <?php 
-            $start = max(1, $page - 2);
-            $end = min($total_pages, $page + 2);
-            
-            if ($start > 1): ?>
-                <span class="page-link disabled">...</span>
-            <?php endif; ?>
-            
-            <?php for ($i = $start; $i <= $end; $i++): ?>
-                <a href="?page=<?= $i ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>" 
-                   class="page-link <?= $i == $page ? 'active' : '' ?>">
-                    <?= $i ?>
-                </a>
-            <?php endfor; ?>
-            
-            <?php if ($end < $total_pages): ?>
-                <span class="page-link disabled">...</span>
-            <?php endif; ?>
-            
-            <?php if ($page < $total_pages): ?>
-                <a href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>" class="page-link">
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-                <a href="?page=<?= $total_pages ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>" class="page-link">
-                    <i class="bi bi-chevron-double-right"></i>
-                </a>
-            <?php endif; ?>
-        </div>
-        <div class="pagination-info">
+        <nav aria-label="Навигация по страницам">
+            <ul class="pagination justify-content-center">
+                <?php if ($page > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                    </li>
+                <?php endif; ?>
+                
+                <?php 
+                $start = max(1, $page - 2);
+                $end = min($total_pages, $page + 2);
+                
+                if ($start > 1): ?>
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                <?php endif; ?>
+                
+                <?php for ($i = $start; $i <= $end; $i++): ?>
+                    <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $i ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+                
+                <?php if ($end < $total_pages): ?>
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                <?php endif; ?>
+                
+                <?php if ($page < $total_pages): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $total_pages ?>&search=<?= urlencode($search) ?>&category=<?= $category_filter ?>">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+        <div class="text-center text-muted mt-2">
             Страница <?= $page ?> из <?= $total_pages ?> • 
             <?= $total_contacts ?> контактов
         </div>
     <?php endif; ?>
 </div>
-
-

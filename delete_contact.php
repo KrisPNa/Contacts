@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 include_once 'includes/functions.php';
@@ -42,32 +41,32 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
 ?>
 <?php include 'includes/header.php'; ?>
 
-<div class="container form-page">
-    <div class="form-header mb-4">
-        <h1 class="h3 text-danger">
-            <i class="bi bi-exclamation-triangle"></i> Удаление контакта
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-danger mb-0">
+            <i class="bi bi-exclamation-triangle me-2"></i> Удаление контакта
         </h1>
         <a href="view_contact.php?id=<?= $contact_id ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
-           class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i>Назад
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Назад
         </a>
     </div>
     
     <div class="card border-danger">
         <div class="card-body text-center">
             <div class="mb-4">
-                <i class="bi bi-trash text-danger" style="font-size: 4rem;"></i>
+                <i class="bi bi-trash text-danger display-1"></i>
             </div>
             
             <h2 class="h4 mb-3">Вы уверены, что хотите удалить этот контакт?</h2>
             
             <div class="alert alert-danger mb-4">
-                <i class="bi bi-exclamation-triangle"></i>
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 Это действие нельзя отменить. Все данные контакта будут удалены безвозвратно.
             </div>
             
             <div class="card mb-4">
-                <div class="card-body text-left">
+                <div class="card-body text-start">
                     <h5 class="card-title">Информация о контакте:</h5>
                     <p class="mb-1"><strong>Имя:</strong> <?= htmlspecialchars($contact['first_name']) ?></p>
                     <p class="mb-1"><strong>Фамилия:</strong> <?= htmlspecialchars($contact['last_name']) ?></p>
@@ -83,11 +82,11 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
             <div class="d-flex justify-content-center gap-3">
                 <a href="delete_contact.php?id=<?= $contact_id ?>&confirm=yes<?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
                    class="btn btn-danger btn-lg">
-                   <i class="bi bi-trash"></i> Да, удалить
+                   <i class="bi bi-trash me-2"></i> Да, удалить
                 </a>
                 <a href="view_contact.php?id=<?= $contact_id ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
-                   class="btn btn-secondary btn-lg">
-                   <i class="bi bi-x-circle"></i> Отмена
+                   class="btn btn-outline-secondary btn-lg">
+                   <i class="bi bi-x-circle me-2"></i> Отмена
                 </a>
             </div>
         </div>

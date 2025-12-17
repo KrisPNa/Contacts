@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 
@@ -49,6 +48,9 @@ if ($_POST) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход администратора - Контакты</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -61,16 +63,17 @@ if ($_POST) {
         <p class="auth-subtitle">Доступ только для администраторов системы</p>
         
         <?php if ($error): ?>
-            <div class="alert alert-danger">
-                <i class="bi bi-exclamation-triangle"></i>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 <?= htmlspecialchars($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
         
         <form method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Имя пользователя или Email *</label>
-                <div class="d-flex">
+                <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                     <input type="text" class="form-control" id="username" name="username" required 
                            value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
@@ -80,7 +83,7 @@ if ($_POST) {
             
             <div class="mb-4">
                 <label for="password" class="form-label">Пароль *</label>
-                <div class="d-flex">
+                <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
                     <input type="password" class="form-control" id="password" name="password" required 
                            autocomplete="current-password" placeholder="Введите пароль">
@@ -89,19 +92,22 @@ if ($_POST) {
             
             <div class="d-grid gap-2 mb-4">
                 <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-box-arrow-in-right"></i>Войти
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Войти
                 </button>
                 <a href="admin_register.php" class="btn btn-outline-primary">
-                    <i class="bi bi-person-plus"></i>Нет аккаунта? Зарегистрироваться
+                    <i class="bi bi-person-plus me-2"></i>Нет аккаунта? Зарегистрироваться
                 </a>
             </div>
         </form>
         
         <div class="auth-footer">
             <a href="auth.php" class="text-accent">
-                <i class="bi bi-person"></i>Вход для обычных пользователей
+                <i class="bi bi-person me-1"></i>Вход для обычных пользователей
             </a>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

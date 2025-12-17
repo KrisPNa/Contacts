@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 include_once 'includes/functions.php';
@@ -62,18 +61,19 @@ foreach ($categories as $category) {
 ?>
 <?php include 'includes/header.php'; ?>
 
-<div class="container form-page">
-    <div class="form-header mb-4">
-        <h1 class="h3">Управление категориями</h1>
-        <a href="index.php" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i>Назад
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Управление категориями</h1>
+        <a href="index.php" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Назад
         </a>
     </div>
     
     <?php if ($error): ?>
-        <div class="alert alert-danger">
-            <i class="bi bi-exclamation-triangle"></i>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
             <?= htmlspecialchars($error) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
     
@@ -81,20 +81,18 @@ foreach ($categories as $category) {
     <div class="card mb-4">
         <div class="card-body">
             <h2 class="h4 mb-3">
-                <i class="bi bi-plus-circle text-accent"></i>Добавить новую категорию
+                <i class="bi bi-plus-circle text-accent me-2"></i>Добавить новую категорию
             </h2>
-            <form method="POST">
-                <div class="d-flex flex-wrap gap-3 align-items-end">
-                    <div style="flex: 1; min-width: 300px;">
-                        <label for="category_name" class="form-label">Название категории</label>
-                        <input type="text" class="form-control" id="category_name" name="category_name" required 
-                               placeholder="Введите название категории" maxlength="50">
-                    </div>
-                    <div>
-                        <button type="submit" name="add_category" value="1" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i>Добавить категорию
-                        </button>
-                    </div>
+            <form method="POST" class="row g-3 align-items-end">
+                <div class="col-md-8">
+                    <label for="category_name" class="form-label">Название категории</label>
+                    <input type="text" class="form-control" id="category_name" name="category_name" required 
+                           placeholder="Введите название категории" maxlength="50">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" name="add_category" value="1" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-circle me-2"></i>Добавить категорию
+                    </button>
                 </div>
             </form>
         </div>
@@ -104,13 +102,13 @@ foreach ($categories as $category) {
     <div class="card">
         <div class="card-body">
             <h2 class="h4 mb-3">
-                <i class="bi bi-tags text-accent"></i>Существующие категории
+                <i class="bi bi-tags text-accent me-2"></i>Существующие категории
             </h2>
             
             <?php if (count($categories) > 0): ?>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Название</th>
@@ -121,25 +119,26 @@ foreach ($categories as $category) {
                         <tbody>
                             <?php foreach ($categories as $category): ?>
                                 <tr>
-                                    <td><?= $category['id'] ?></td>
+                                    <td class="fw-semibold"><?= $category['id'] ?></td>
                                     <td>
                                         <strong><?= htmlspecialchars($category['name']) ?></strong>
                                     </td>
                                     <td>
-                                        <span class="<?= $usage_stats[$category['id']] > 0 ? 'badge badge-primary' : 'text-muted' ?>">
+                                        <span class="<?= $usage_stats[$category['id']] > 0 ? 'badge bg-primary' : 'text-muted' ?>">
                                             <?= $usage_stats[$category['id']] ?> контактов
                                         </span>
                                     </td>
                                     <td>
                                         <?php if ($usage_stats[$category['id']] == 0): ?>
                                             <a href="manage_categories.php?delete=<?= $category['id'] ?>" 
-                                               class="btn btn-secondary btn-sm"
-                                               onclick="return confirm('Вы уверены, что хотите удалить категорию \"<?= htmlspecialchars($category['name']) ?>\"?')">
+                                               class="btn btn-outline-danger btn-sm"
+                                               onclick="return confirm('Вы уверены, что хотите удалить категорию \"<?= htmlspecialchars(addslashes($category['name'])) ?>\"?')"
+                                               title="Удалить категорию">
                                                <i class="bi bi-trash"></i>
                                             </a>
                                         <?php else: ?>
                                             <span class="text-muted small">
-                                                <i class="bi bi-lock"></i> Нельзя удалить
+                                                <i class="bi bi-lock me-1"></i> Нельзя удалить
                                             </span>
                                         <?php endif; ?>
                                     </td>
@@ -151,8 +150,8 @@ foreach ($categories as $category) {
             <?php else: ?>
                 <div class="text-center py-4">
                     <div class="text-muted">
-                        <i class="bi bi-tags" style="font-size: 2rem;"></i>
-                        <p class="mt-2">Пока нет категорий. Добавьте первую категорию с помощью формы выше.</p>
+                        <i class="bi bi-tags display-4"></i>
+                        <p class="mt-3 fs-5">Пока нет категорий. Добавьте первую категорию с помощью формы выше.</p>
                     </div>
                 </div>
             <?php endif; ?>

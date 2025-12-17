@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 include_once 'includes/functions.php';
@@ -33,28 +32,28 @@ foreach ($categories as $cat) {
 ?>
 <?php include 'includes/header.php'; ?>
 
-<div class="container contact-view">
+<div class="container py-4 contact-view">
     <!-- Панель действий -->
-    <div class="form-header mb-4">
-        <div></div> <!-- Пустой div для выравнивания -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div></div>
         <div class="d-flex gap-2">
             <?php if ($is_admin && $return_url): ?>
-                <a href="<?= htmlspecialchars($return_url) ?>" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i>Назад
+                <a href="<?= htmlspecialchars($return_url) ?>" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Назад
                 </a>
             <?php else: ?>
-                <a href="<?= $is_admin ? 'admin_users.php' : 'index.php' ?>" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i>Назад
+                <a href="<?= $is_admin ? 'admin_users.php' : 'index.php' ?>" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Назад
                 </a>
             <?php endif; ?>
             <a href="edit_contact.php?id=<?= $contact['id'] ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
                class="btn btn-primary">
-                <i class="bi bi-pencil"></i>Редактировать
+                <i class="bi bi-pencil me-1"></i>Редактировать
             </a>
             <a href="delete_contact.php?id=<?= $contact['id'] ?><?= $return_url ? '&return=' . urlencode($return_url) : '' ?>" 
-               class="btn btn-secondary"
+               class="btn btn-outline-danger"
                onclick="return confirm('Вы уверены, что хотите удалить этот контакт?')">
-                <i class="bi bi-trash"></i>Удалить
+                <i class="bi bi-trash me-1"></i>Удалить
             </a>
         </div>
     </div>
@@ -66,8 +65,8 @@ foreach ($categories as $cat) {
                 <i class="bi bi-person"></i>
             </div>
             <div class="contact-fullname">
-                <h1><?= htmlspecialchars($contact['first_name']) ?></h1>
-                <h2><?= htmlspecialchars($contact['last_name']) ?></h2>
+                <h1 class="mb-0"><?= htmlspecialchars($contact['first_name']) ?></h1>
+                <h2 class="h3 text-muted"><?= htmlspecialchars($contact['last_name']) ?></h2>
             </div>
         </div>
         
@@ -75,9 +74,9 @@ foreach ($categories as $cat) {
             <?php if ($contact['phone']): ?>
                 <div class="contact-section">
                     <div class="section-label">
-                        <i class="bi bi-telephone"></i> Телефон
+                        <i class="bi bi-telephone me-2"></i> Телефон
                     </div>
-                    <div class="section-value">
+                    <div class="section-value fs-5">
                         <?= htmlspecialchars($contact['phone']) ?>
                     </div>
                 </div>
@@ -86,9 +85,9 @@ foreach ($categories as $cat) {
             <?php if ($contact['email']): ?>
                 <div class="contact-section">
                     <div class="section-label">
-                        <i class="bi bi-envelope"></i> Email
+                        <i class="bi bi-envelope me-2"></i> Email
                     </div>
-                    <div class="section-value">
+                    <div class="section-value fs-5">
                         <?= htmlspecialchars($contact['email']) ?>
                     </div>
                 </div>
@@ -97,7 +96,7 @@ foreach ($categories as $cat) {
             <?php if ($contact['address']): ?>
                 <div class="contact-section">
                     <div class="section-label">
-                        <i class="bi bi-house-door"></i> Адрес
+                        <i class="bi bi-house-door me-2"></i> Адрес
                     </div>
                     <div class="section-value">
                         <?= nl2br(htmlspecialchars($contact['address'])) ?>
@@ -108,7 +107,7 @@ foreach ($categories as $cat) {
             <?php if (!empty($contact_categories)): ?>
                 <div class="contact-section">
                     <div class="section-label">
-                        <i class="bi bi-tags"></i> Категории
+                        <i class="bi bi-tags me-2"></i> Категории
                     </div>
                     <div class="section-value">
                         <div class="contact-categories">

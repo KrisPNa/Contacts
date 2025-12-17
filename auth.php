@@ -1,4 +1,3 @@
-
 <?php
 include_once 'config/database.php';
 
@@ -89,6 +88,9 @@ if ($_POST && $action === 'login') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $action === 'register' ? 'Регистрация' : 'Вход' ?> - Контакты</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -103,9 +105,10 @@ if ($_POST && $action === 'login') {
         </p>
         
         <?php if ($error): ?>
-            <div class="alert alert-danger">
-                <i class="bi bi-exclamation-triangle"></i>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 <?= htmlspecialchars($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
         
@@ -113,7 +116,7 @@ if ($_POST && $action === 'login') {
             <form method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label">Имя пользователя *</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
                         <input type="text" class="form-control" id="username" name="username" required 
                                value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
@@ -123,7 +126,7 @@ if ($_POST && $action === 'login') {
                 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email *</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                         <input type="email" class="form-control" id="email" name="email" required 
                                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" 
@@ -133,7 +136,7 @@ if ($_POST && $action === 'login') {
                 
                 <div class="mb-3">
                     <label for="password" class="form-label">Пароль *</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" class="form-control" id="password" name="password" required 
                                minlength="6" autocomplete="new-password" placeholder="Минимум 6 символов">
@@ -143,7 +146,7 @@ if ($_POST && $action === 'login') {
                 
                 <div class="mb-4">
                     <label for="password_confirm" class="form-label">Подтвердите пароль *</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                         <input type="password" class="form-control" id="password_confirm" name="password_confirm" required 
                                minlength="6" autocomplete="new-password" placeholder="Повторите пароль">
@@ -152,10 +155,10 @@ if ($_POST && $action === 'login') {
                 
                 <div class="d-grid gap-2 mb-4">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-person-plus"></i>Зарегистрироваться
+                        <i class="bi bi-person-plus me-2"></i>Зарегистрироваться
                     </button>
                     <a href="?action=login" class="btn btn-outline-primary">
-                        <i class="bi bi-box-arrow-in-right"></i>Уже есть аккаунт? Войти
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Уже есть аккаунт? Войти
                     </a>
                 </div>
             </form>
@@ -163,7 +166,7 @@ if ($_POST && $action === 'login') {
             <form method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label">Имя пользователя или Email *</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
                         <input type="text" class="form-control" id="username" name="username" required 
                                value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" 
@@ -173,7 +176,7 @@ if ($_POST && $action === 'login') {
                 
                 <div class="mb-4">
                     <label for="password" class="form-label">Пароль *</label>
-                    <div class="d-flex">
+                    <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" class="form-control" id="password" name="password" required 
                                autocomplete="current-password" placeholder="Введите пароль">
@@ -182,10 +185,10 @@ if ($_POST && $action === 'login') {
                 
                 <div class="d-grid gap-2 mb-4">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-box-arrow-in-right"></i>Войти
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Войти
                     </button>
                     <a href="?action=register" class="btn btn-outline-primary">
-                        <i class="bi bi-person-plus"></i>Нет аккаунта? Зарегистрироваться
+                        <i class="bi bi-person-plus me-2"></i>Нет аккаунта? Зарегистрироваться
                     </a>
                 </div>
             </form>
@@ -193,9 +196,12 @@ if ($_POST && $action === 'login') {
         
         <div class="auth-footer">
             <a href="admin_login.php" class="text-accent">
-                <i class="bi bi-shield-check"></i>Вход для администратора
+                <i class="bi bi-shield-check me-1"></i>Вход для администратора
             </a>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
