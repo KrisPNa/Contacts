@@ -80,7 +80,7 @@ $categories = getAllCategories();
                         <i class="bi bi-person-gear"></i>
                         <?= htmlspecialchars($_SESSION['username'] ?? 'Администратор') ?>
                     </span>
-                    <a href="logout.php" class="btn btn-outline-secondary">
+                    <a href="auth.php" class="btn btn-outline-secondary">
                         <i class="bi bi-box-arrow-right me-1"></i>Выйти
                     </a>
                 </nav>

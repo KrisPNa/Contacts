@@ -35,7 +35,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <span class="user-info">
                             <i class="bi bi-person-circle me-1"></i><?= htmlspecialchars($_SESSION['username'] ?? 'Пользователь') ?>
                         </span>
-                        <a href="logout.php" class="btn btn-outline-secondary">
+                        <a href="auth.php" class="btn btn-outline-secondary">
                             <i class="bi bi-box-arrow-right me-1"></i>Выйти
                         </a>
                     <?php endif; ?>
@@ -46,7 +46,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <main class="main">
         <div class="container">
-            <!-- Сообщения -->
+            
             <?php if (isset($_SESSION['message'])): ?>
                 <div class="alert alert-info alert-dismissible fade show mt-3" role="alert">
                     <i class="bi bi-info-circle me-2"></i>

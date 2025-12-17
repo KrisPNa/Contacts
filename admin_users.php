@@ -93,7 +93,7 @@ $total_pages = ceil($total_users / $limit);
                         <i class="bi bi-person-gear"></i>
                         <?= htmlspecialchars($_SESSION['username'] ?? 'Администратор') ?>
                     </span>
-                    <a href="logout.php" class="btn btn-secondary">
+                    <a href="auth.php" class="btn btn-secondary">
                         <i class="bi bi-box-arrow-right"></i>Выйти
                     </a>
                 </nav>

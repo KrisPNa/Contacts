@@ -114,12 +114,12 @@ $categories = getAllCategories();
                         <div class="col-md-6 mb-3">
                             <label for="phone" class="form-label">
                                 <i class="bi bi-telephone text-accent me-1"></i>
-                                Телефон
+                                Телефон *
                             </label>
                             <input type="tel" class="form-control" id="phone" name="phone" 
                                    value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"
                                    placeholder="+375 (99) 999-99-99">
-                            <div class="form-text">Необязательное поле</div>
+                            
                         </div>
                     </div>
                 </div>

@@ -114,7 +114,13 @@ function getContactById($id, $user_id = null) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $contact = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$contact) {
+        throw new Exception('Контакт не найден');
+    }
+    
+    return $contact;
 }
 
 function getAllCategories() {
@@ -196,27 +202,40 @@ function updateContact($id, $data, $user_id = null) {
     try {
         $pdo->beginTransaction();
         
-        $where_conditions = ["id = ?"];
-        $params = [
-            $data['first_name'],
-            $data['last_name'],
-            $data['email'],
-            $data['phone'],
-            $data['address']
-        ];
-        
+        // Обновляем контакт
         if ($user_id !== null) {
-            $where_conditions[] = "user_id = ?";
-            $params[] = $user_id;
+            $sql = "UPDATE contacts SET 
+                    first_name = ?, last_name = ?, email = ?, phone = ?, address = ? 
+                    WHERE id = ? AND user_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                $data['first_name'],
+                $data['last_name'],
+                $data['email'],
+                $data['phone'],
+                $data['address'],
+                $id,
+                $user_id
+            ]);
+        } else {
+            $sql = "UPDATE contacts SET 
+                    first_name = ?, last_name = ?, email = ?, phone = ?, address = ? 
+                    WHERE id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                $data['first_name'],
+                $data['last_name'],
+                $data['email'],
+                $data['phone'],
+                $data['address'],
+                $id
+            ]);
         }
         
-        $params[] = $id;
-        
-        // Обновляем контакт
-        $sql = "UPDATE contacts SET first_name = ?, last_name = ?, email = ?, phone = ?, address = ? 
-                WHERE " . implode(" AND ", $where_conditions);
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
+        // Проверяем обновление
+        if ($stmt->rowCount() === 0) {
+            throw new Exception('Контакт не найден или не обновлен');
+        }
         
         // Удаляем старые категории
         $sql = "DELETE FROM contact_categories WHERE contact_id = ?";
